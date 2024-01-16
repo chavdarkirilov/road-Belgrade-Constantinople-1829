@@ -1,0 +1,3011 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/Wallenclosedsmalltown_1.js"></script>
+        <script src="data/Village_2.js"></script>
+        <script src="data/Unknown_3.js"></script>
+        <script src="data/Unfortifiedtown_4.js"></script>
+        <script src="data/Unfortifiedsmalltown_5.js"></script>
+        <script src="data/Unfortifiedcapitalcity_6.js"></script>
+        <script src="data/SandzhakPashaseat_7.js"></script>
+        <script src="data/Roadsideinn_8.js"></script>
+        <script src="data/Poststation_9.js"></script>
+        <script src="data/Portanchorage_10.js"></script>
+        <script src="data/Palace_11.js"></script>
+        <script src="data/Metropolitansee_12.js"></script>
+        <script src="data/Kadiseat_13.js"></script>
+        <script src="data/Hamlet_14.js"></script>
+        <script src="data/Guardhouse_15.js"></script>
+        <script src="data/Fortifiedcapitalcity_16.js"></script>
+        <script src="data/Fortification_17.js"></script>
+        <script src="data/Farm_18.js"></script>
+        <script src="data/Citygate_19.js"></script>
+        <script src="data/Caravanandorarmystation_20.js"></script>
+        <script src="data/Bridge_21.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        map.createPane('pane_OpenStreetMap_0');
+        map.getPane('pane_OpenStreetMap_0').style.zIndex = 400;
+        var layer_OpenStreetMap_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMap_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OpenStreetMap_0;
+        map.addLayer(layer_OpenStreetMap_0);
+        function pop_Wallenclosedsmalltown_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Wallenclosedsmalltown_1_0() {
+            return {
+                pane: 'pane_Wallenclosedsmalltown_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(183,72,75,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Wallenclosedsmalltown_1');
+        map.getPane('pane_Wallenclosedsmalltown_1').style.zIndex = 401;
+        map.getPane('pane_Wallenclosedsmalltown_1').style['mix-blend-mode'] = 'normal';
+        var layer_Wallenclosedsmalltown_1 = new L.geoJson(json_Wallenclosedsmalltown_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Wallenclosedsmalltown_1',
+            layerName: 'layer_Wallenclosedsmalltown_1',
+            pane: 'pane_Wallenclosedsmalltown_1',
+            onEachFeature: pop_Wallenclosedsmalltown_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Wallenclosedsmalltown_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Wallenclosedsmalltown_1);
+        map.addLayer(layer_Wallenclosedsmalltown_1);
+        function pop_Village_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Village_2_0() {
+            return {
+                pane: 'pane_Village_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,158,23,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Village_2');
+        map.getPane('pane_Village_2').style.zIndex = 402;
+        map.getPane('pane_Village_2').style['mix-blend-mode'] = 'normal';
+        var layer_Village_2 = new L.geoJson(json_Village_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Village_2',
+            layerName: 'layer_Village_2',
+            pane: 'pane_Village_2',
+            onEachFeature: pop_Village_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Village_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Village_2);
+        map.addLayer(layer_Village_2);
+        function pop_Unknown_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Unknown_3_0() {
+            return {
+                pane: 'pane_Unknown_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,113,141,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Unknown_3');
+        map.getPane('pane_Unknown_3').style.zIndex = 403;
+        map.getPane('pane_Unknown_3').style['mix-blend-mode'] = 'normal';
+        var layer_Unknown_3 = new L.geoJson(json_Unknown_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Unknown_3',
+            layerName: 'layer_Unknown_3',
+            pane: 'pane_Unknown_3',
+            onEachFeature: pop_Unknown_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Unknown_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Unknown_3);
+        map.addLayer(layer_Unknown_3);
+        function pop_Unfortifiedtown_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Unfortifiedtown_4_0() {
+            return {
+                pane: 'pane_Unfortifiedtown_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(141,90,153,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Unfortifiedtown_4');
+        map.getPane('pane_Unfortifiedtown_4').style.zIndex = 404;
+        map.getPane('pane_Unfortifiedtown_4').style['mix-blend-mode'] = 'normal';
+        var layer_Unfortifiedtown_4 = new L.geoJson(json_Unfortifiedtown_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Unfortifiedtown_4',
+            layerName: 'layer_Unfortifiedtown_4',
+            pane: 'pane_Unfortifiedtown_4',
+            onEachFeature: pop_Unfortifiedtown_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Unfortifiedtown_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Unfortifiedtown_4);
+        map.addLayer(layer_Unfortifiedtown_4);
+        function pop_Unfortifiedsmalltown_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Unfortifiedsmalltown_5_0() {
+            return {
+                pane: 'pane_Unfortifiedsmalltown_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(243,166,178,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Unfortifiedsmalltown_5');
+        map.getPane('pane_Unfortifiedsmalltown_5').style.zIndex = 405;
+        map.getPane('pane_Unfortifiedsmalltown_5').style['mix-blend-mode'] = 'normal';
+        var layer_Unfortifiedsmalltown_5 = new L.geoJson(json_Unfortifiedsmalltown_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Unfortifiedsmalltown_5',
+            layerName: 'layer_Unfortifiedsmalltown_5',
+            pane: 'pane_Unfortifiedsmalltown_5',
+            onEachFeature: pop_Unfortifiedsmalltown_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Unfortifiedsmalltown_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Unfortifiedsmalltown_5);
+        map.addLayer(layer_Unfortifiedsmalltown_5);
+        function pop_Unfortifiedcapitalcity_6(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Unfortifiedcapitalcity_6_0() {
+            return {
+                pane: 'pane_Unfortifiedcapitalcity_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(114,155,111,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Unfortifiedcapitalcity_6');
+        map.getPane('pane_Unfortifiedcapitalcity_6').style.zIndex = 406;
+        map.getPane('pane_Unfortifiedcapitalcity_6').style['mix-blend-mode'] = 'normal';
+        var layer_Unfortifiedcapitalcity_6 = new L.geoJson(json_Unfortifiedcapitalcity_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Unfortifiedcapitalcity_6',
+            layerName: 'layer_Unfortifiedcapitalcity_6',
+            pane: 'pane_Unfortifiedcapitalcity_6',
+            onEachFeature: pop_Unfortifiedcapitalcity_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Unfortifiedcapitalcity_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Unfortifiedcapitalcity_6);
+        map.addLayer(layer_Unfortifiedcapitalcity_6);
+        function pop_SandzhakPashaseat_7(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_SandzhakPashaseat_7_0() {
+            return {
+                pane: 'pane_SandzhakPashaseat_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(213,180,60,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_SandzhakPashaseat_7');
+        map.getPane('pane_SandzhakPashaseat_7').style.zIndex = 407;
+        map.getPane('pane_SandzhakPashaseat_7').style['mix-blend-mode'] = 'normal';
+        var layer_SandzhakPashaseat_7 = new L.geoJson(json_SandzhakPashaseat_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_SandzhakPashaseat_7',
+            layerName: 'layer_SandzhakPashaseat_7',
+            pane: 'pane_SandzhakPashaseat_7',
+            onEachFeature: pop_SandzhakPashaseat_7,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_SandzhakPashaseat_7_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_SandzhakPashaseat_7);
+        map.addLayer(layer_SandzhakPashaseat_7);
+        function pop_Roadsideinn_8(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Roadsideinn_8_0() {
+            return {
+                pane: 'pane_Roadsideinn_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(164,113,88,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Roadsideinn_8');
+        map.getPane('pane_Roadsideinn_8').style.zIndex = 408;
+        map.getPane('pane_Roadsideinn_8').style['mix-blend-mode'] = 'normal';
+        var layer_Roadsideinn_8 = new L.geoJson(json_Roadsideinn_8, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Roadsideinn_8',
+            layerName: 'layer_Roadsideinn_8',
+            pane: 'pane_Roadsideinn_8',
+            onEachFeature: pop_Roadsideinn_8,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Roadsideinn_8_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Roadsideinn_8);
+        map.addLayer(layer_Roadsideinn_8);
+        function pop_Poststation_9(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Poststation_9_0() {
+            return {
+                pane: 'pane_Poststation_9',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(133,182,111,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Poststation_9');
+        map.getPane('pane_Poststation_9').style.zIndex = 409;
+        map.getPane('pane_Poststation_9').style['mix-blend-mode'] = 'normal';
+        var layer_Poststation_9 = new L.geoJson(json_Poststation_9, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Poststation_9',
+            layerName: 'layer_Poststation_9',
+            pane: 'pane_Poststation_9',
+            onEachFeature: pop_Poststation_9,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Poststation_9_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Poststation_9);
+        map.addLayer(layer_Poststation_9);
+        function pop_Portanchorage_10(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Portanchorage_10_0() {
+            return {
+                pane: 'pane_Portanchorage_10',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,139,143,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Portanchorage_10');
+        map.getPane('pane_Portanchorage_10').style.zIndex = 410;
+        map.getPane('pane_Portanchorage_10').style['mix-blend-mode'] = 'normal';
+        var layer_Portanchorage_10 = new L.geoJson(json_Portanchorage_10, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Portanchorage_10',
+            layerName: 'layer_Portanchorage_10',
+            pane: 'pane_Portanchorage_10',
+            onEachFeature: pop_Portanchorage_10,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Portanchorage_10_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Portanchorage_10);
+        map.addLayer(layer_Portanchorage_10);
+        function pop_Palace_11(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Palace_11_0() {
+            return {
+                pane: 'pane_Palace_11',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(145,82,45,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Palace_11');
+        map.getPane('pane_Palace_11').style.zIndex = 411;
+        map.getPane('pane_Palace_11').style['mix-blend-mode'] = 'normal';
+        var layer_Palace_11 = new L.geoJson(json_Palace_11, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Palace_11',
+            layerName: 'layer_Palace_11',
+            pane: 'pane_Palace_11',
+            onEachFeature: pop_Palace_11,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Palace_11_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Palace_11);
+        map.addLayer(layer_Palace_11);
+        function pop_Metropolitansee_12(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Metropolitansee_12_0() {
+            return {
+                pane: 'pane_Metropolitansee_12',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(190,178,151,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Metropolitansee_12');
+        map.getPane('pane_Metropolitansee_12').style.zIndex = 412;
+        map.getPane('pane_Metropolitansee_12').style['mix-blend-mode'] = 'normal';
+        var layer_Metropolitansee_12 = new L.geoJson(json_Metropolitansee_12, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Metropolitansee_12',
+            layerName: 'layer_Metropolitansee_12',
+            pane: 'pane_Metropolitansee_12',
+            onEachFeature: pop_Metropolitansee_12,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Metropolitansee_12_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Metropolitansee_12);
+        map.addLayer(layer_Metropolitansee_12);
+        function pop_Kadiseat_13(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Kadiseat_13_0() {
+            return {
+                pane: 'pane_Kadiseat_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(196,60,57,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Kadiseat_13');
+        map.getPane('pane_Kadiseat_13').style.zIndex = 413;
+        map.getPane('pane_Kadiseat_13').style['mix-blend-mode'] = 'normal';
+        var layer_Kadiseat_13 = new L.geoJson(json_Kadiseat_13, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Kadiseat_13',
+            layerName: 'layer_Kadiseat_13',
+            pane: 'pane_Kadiseat_13',
+            onEachFeature: pop_Kadiseat_13,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Kadiseat_13_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Kadiseat_13);
+        map.addLayer(layer_Kadiseat_13);
+        function pop_Hamlet_14(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Hamlet_14_0() {
+            return {
+                pane: 'pane_Hamlet_14',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,182,54,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Hamlet_14');
+        map.getPane('pane_Hamlet_14').style.zIndex = 414;
+        map.getPane('pane_Hamlet_14').style['mix-blend-mode'] = 'normal';
+        var layer_Hamlet_14 = new L.geoJson(json_Hamlet_14, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Hamlet_14',
+            layerName: 'layer_Hamlet_14',
+            pane: 'pane_Hamlet_14',
+            onEachFeature: pop_Hamlet_14,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Hamlet_14_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Hamlet_14);
+        map.addLayer(layer_Hamlet_14);
+        function pop_Guardhouse_15(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Guardhouse_15_0() {
+            return {
+                pane: 'pane_Guardhouse_15',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(225,89,137,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Guardhouse_15');
+        map.getPane('pane_Guardhouse_15').style.zIndex = 415;
+        map.getPane('pane_Guardhouse_15').style['mix-blend-mode'] = 'normal';
+        var layer_Guardhouse_15 = new L.geoJson(json_Guardhouse_15, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Guardhouse_15',
+            layerName: 'layer_Guardhouse_15',
+            pane: 'pane_Guardhouse_15',
+            onEachFeature: pop_Guardhouse_15,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Guardhouse_15_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Guardhouse_15);
+        map.addLayer(layer_Guardhouse_15);
+        function pop_Fortifiedcapitalcity_16(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Fortifiedcapitalcity_16_0() {
+            return {
+                pane: 'pane_Fortifiedcapitalcity_16',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(190,207,80,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Fortifiedcapitalcity_16');
+        map.getPane('pane_Fortifiedcapitalcity_16').style.zIndex = 416;
+        map.getPane('pane_Fortifiedcapitalcity_16').style['mix-blend-mode'] = 'normal';
+        var layer_Fortifiedcapitalcity_16 = new L.geoJson(json_Fortifiedcapitalcity_16, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Fortifiedcapitalcity_16',
+            layerName: 'layer_Fortifiedcapitalcity_16',
+            pane: 'pane_Fortifiedcapitalcity_16',
+            onEachFeature: pop_Fortifiedcapitalcity_16,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Fortifiedcapitalcity_16_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Fortifiedcapitalcity_16);
+        map.addLayer(layer_Fortifiedcapitalcity_16);
+        function pop_Fortification_17(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Fortification_17_0() {
+            return {
+                pane: 'pane_Fortification_17',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(152,125,183,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Fortification_17');
+        map.getPane('pane_Fortification_17').style.zIndex = 417;
+        map.getPane('pane_Fortification_17').style['mix-blend-mode'] = 'normal';
+        var layer_Fortification_17 = new L.geoJson(json_Fortification_17, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Fortification_17',
+            layerName: 'layer_Fortification_17',
+            pane: 'pane_Fortification_17',
+            onEachFeature: pop_Fortification_17,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Fortification_17_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Fortification_17);
+        map.addLayer(layer_Fortification_17);
+        function pop_Farm_18(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Farm_18_0() {
+            return {
+                pane: 'pane_Farm_18',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(231,113,72,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Farm_18');
+        map.getPane('pane_Farm_18').style.zIndex = 418;
+        map.getPane('pane_Farm_18').style['mix-blend-mode'] = 'normal';
+        var layer_Farm_18 = new L.geoJson(json_Farm_18, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Farm_18',
+            layerName: 'layer_Farm_18',
+            pane: 'pane_Farm_18',
+            onEachFeature: pop_Farm_18,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Farm_18_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Farm_18);
+        map.addLayer(layer_Farm_18);
+        function pop_Citygate_19(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Citygate_19_0() {
+            return {
+                pane: 'pane_Citygate_19',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(183,72,75,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Citygate_19');
+        map.getPane('pane_Citygate_19').style.zIndex = 419;
+        map.getPane('pane_Citygate_19').style['mix-blend-mode'] = 'normal';
+        var layer_Citygate_19 = new L.geoJson(json_Citygate_19, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Citygate_19',
+            layerName: 'layer_Citygate_19',
+            pane: 'pane_Citygate_19',
+            onEachFeature: pop_Citygate_19,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Citygate_19_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Citygate_19);
+        map.addLayer(layer_Citygate_19);
+        function pop_Caravanandorarmystation_20(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Caravanandorarmystation_20_0() {
+            return {
+                pane: 'pane_Caravanandorarmystation_20',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,158,23,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Caravanandorarmystation_20');
+        map.getPane('pane_Caravanandorarmystation_20').style.zIndex = 420;
+        map.getPane('pane_Caravanandorarmystation_20').style['mix-blend-mode'] = 'normal';
+        var layer_Caravanandorarmystation_20 = new L.geoJson(json_Caravanandorarmystation_20, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Caravanandorarmystation_20',
+            layerName: 'layer_Caravanandorarmystation_20',
+            pane: 'pane_Caravanandorarmystation_20',
+            onEachFeature: pop_Caravanandorarmystation_20,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Caravanandorarmystation_20_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Caravanandorarmystation_20);
+        map.addLayer(layer_Caravanandorarmystation_20);
+        function pop_Bridge_21(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">map_name</th>\
+                        <td>' + (feature.properties['map_name'] !== null ? autolinker.link(feature.properties['map_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitude</th>\
+                        <td>' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitude</th>\
+                        <td>' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">geonames_url</th>\
+                        <td>' + (feature.properties['geonames_url'] !== null ? autolinker.link(feature.properties['geonames_url'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">settlement_type</th>\
+                        <td>' + (feature.properties['settlement_type'] !== null ? autolinker.link(feature.properties['settlement_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_point_type</th>\
+                        <td>' + (feature.properties['road_point_type'] !== null ? autolinker.link(feature.properties['road_point_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">relative_to_road</th>\
+                        <td>' + (feature.properties['relative_to_road'] !== null ? autolinker.link(feature.properties['relative_to_road'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">post_station</th>\
+                        <td>' + (feature.properties['post_station'] !== null ? autolinker.link(feature.properties['post_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caravan_army_station</th>\
+                        <td>' + (feature.properties['caravan_army_station'] !== null ? autolinker.link(feature.properties['caravan_army_station'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">port_anchorage</th>\
+                        <td>' + (feature.properties['port_anchorage'] !== null ? autolinker.link(feature.properties['port_anchorage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vizier_seat</th>\
+                        <td>' + (feature.properties['vizier_seat'] !== null ? autolinker.link(feature.properties['vizier_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sanjak_pasha_seat</th>\
+                        <td>' + (feature.properties['sanjak_pasha_seat'] !== null ? autolinker.link(feature.properties['sanjak_pasha_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">kadi_seat</th>\
+                        <td>' + (feature.properties['kadi_seat'] !== null ? autolinker.link(feature.properties['kadi_seat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">metropolitan_see</th>\
+                        <td>' + (feature.properties['metropolitan_see'] !== null ? autolinker.link(feature.properties['metropolitan_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">episcopal_see</th>\
+                        <td>' + (feature.properties['episcopal_see'] !== null ? autolinker.link(feature.properties['episcopal_see'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road_section</th>\
+                        <td>' + (feature.properties['road_section'] !== null ? autolinker.link(feature.properties['road_section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">comment</th>\
+                        <td>' + (feature.properties['comment'] !== null ? autolinker.link(feature.properties['comment'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">contributor</th>\
+                        <td>' + (feature.properties['contributor'] !== null ? autolinker.link(feature.properties['contributor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">created_at</th>\
+                        <td>' + (feature.properties['created_at'] !== null ? autolinker.link(feature.properties['created_at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sett_cat_size</th>\
+                        <td>' + (feature.properties['sett_cat_size'] !== null ? autolinker.link(feature.properties['sett_cat_size'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Bridge_21_0() {
+            return {
+                pane: 'pane_Bridge_21',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,113,141,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Bridge_21');
+        map.getPane('pane_Bridge_21').style.zIndex = 421;
+        map.getPane('pane_Bridge_21').style['mix-blend-mode'] = 'normal';
+        var layer_Bridge_21 = new L.geoJson(json_Bridge_21, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Bridge_21',
+            layerName: 'layer_Bridge_21',
+            pane: 'pane_Bridge_21',
+            onEachFeature: pop_Bridge_21,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Bridge_21_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Bridge_21);
+        map.addLayer(layer_Bridge_21);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Bridge_21.png" /> Bridge': layer_Bridge_21,'<img src="legend/Caravanandorarmystation_20.png" /> Caravan and/or army station': layer_Caravanandorarmystation_20,'<img src="legend/Citygate_19.png" /> City gate': layer_Citygate_19,'<img src="legend/Farm_18.png" /> Farm': layer_Farm_18,'<img src="legend/Fortification_17.png" /> Fortification': layer_Fortification_17,'<img src="legend/Fortifiedcapitalcity_16.png" /> Fortified capital city': layer_Fortifiedcapitalcity_16,'<img src="legend/Guardhouse_15.png" /> Guardhouse': layer_Guardhouse_15,'<img src="legend/Hamlet_14.png" /> Hamlet': layer_Hamlet_14,'<img src="legend/Kadiseat_13.png" /> Kadi seat': layer_Kadiseat_13,'<img src="legend/Metropolitansee_12.png" /> Metropolitan see': layer_Metropolitansee_12,'<img src="legend/Palace_11.png" /> Palace': layer_Palace_11,'<img src="legend/Portanchorage_10.png" /> Port/anchorage': layer_Portanchorage_10,'<img src="legend/Poststation_9.png" /> Post station': layer_Poststation_9,'<img src="legend/Roadsideinn_8.png" /> Roadside inn': layer_Roadsideinn_8,'<img src="legend/SandzhakPashaseat_7.png" /> Sandzhak/Pasha seat': layer_SandzhakPashaseat_7,'<img src="legend/Unfortifiedcapitalcity_6.png" /> Unfortified capital city': layer_Unfortifiedcapitalcity_6,'<img src="legend/Unfortifiedsmalltown_5.png" /> Unfortified small town': layer_Unfortifiedsmalltown_5,'<img src="legend/Unfortifiedtown_4.png" /> Unfortified town': layer_Unfortifiedtown_4,'<img src="legend/Unknown_3.png" /> Unknown': layer_Unknown_3,'<img src="legend/Village_2.png" /> Village': layer_Village_2,'<img src="legend/Wallenclosedsmalltown_1.png" /> Wall enclosed small town': layer_Wallenclosedsmalltown_1,"OpenStreetMap": layer_OpenStreetMap_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
